@@ -76,11 +76,6 @@
             </div>
             <a class="navbar-brand" href="#pablo"> Agents in {{city_name}} (<span id="agents_count">{{agents_count}}</span>)</a>
           </div>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-          </button>
 
         </div>
       </nav>
@@ -95,7 +90,6 @@
           <div id="myBtnContainer">
               <div class="row">
               &nbsp;&nbsp;&nbsp;&nbsp;
-
               <button class="btn " onClick="window.location.reload();" > Default</button>
               <button class="btn" id="tot_exp_filter"> Total Experience</button>
               <button class="btn" id="current_city_filter"> Current City Experience</button>
@@ -121,7 +115,19 @@
                 </div>
 
               </div>
+              <div class="row">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="col-9">
+                  <button class="btn" id="License_filter"> Exclude PENN</button>
+                  <button class="btn" id="License_filter"> Include VOYA</button>
+                  <button class="btn" id="License_filter"> Exclude Global Companies</button>
+                </div>
+                <div class="col-2">
+
+                </div>
+              </div>
               <input  id="search_agents" type="text" value="" class="form-control" placeholder="search agents">
+
 
             </div>
 
