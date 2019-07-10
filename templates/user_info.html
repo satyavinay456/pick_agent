@@ -94,16 +94,76 @@
 
 </div> -->
       <div class="content">
-
         <div class="row">
           <div class="col-md-12">
-            <div class="card " style="height:500px;">
-              <div class="card-header ">
+            <div class="card " >
+              <div class="container">
+                <br>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col" id="property_name"> {{fin_brok['Name']}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>CRD </td>
+                    <td>{{fin_brok['CRD']}}</td>
+                  </tr>
+                  <tr>
+                    <td>Company</td>
+                    <td>{{fin_brok['Company']}}</td>
+                  </tr>
+                  <tr>
+                    <td>Address</td>
+                    <td>{{fin_brok['Address']}}</td>
+                  </tr>
+                  <tr>
+                    <td>Contact</td>
+                    <td>{{fin_brok['contact']}}</td>
+                  </tr>
+                  <tr>
+                    <td>Licenses</td>
+                    <td >{{fin_brok['Licenses']}}</td>
+                  </tr>
+                  <tr>
+                    <td>State Registrations</td>
+                    <td>{{fin_brok['State_Registrations']}}</td>
+                  </tr>
+                  <tr>
+                    <td>Exams</td>
+                    <td style="white-space: pre-line">{{fin_brok['Exams']}}</td>
+                  </tr>
 
-              </div>
-              <div class="card-body " id="wrap" >
-                  <iframe id="crd_frame" src="https://brokercheck.finra.org/individual/summary/{{id}}" height="470" width="1000" allowfullscreen="" frameborder="0"></iframe>
-              </div>
+                  <tr>
+                    <td>Total Experience</td>
+                    <td >{{fin_brok['TotalExperience']}} Years</td>
+                  </tr>
+                  <tr>
+                    <td>Experience in the current city</td>
+                    <td >{{fin_brok['PresentExperience']}} Years</td>
+                  </tr>
+                  <tr>
+                    <td>Adviser</td>
+                    <td >{{fin_brok['InsuranceAdv']}}</td>
+                  </tr>
+                  <tr>
+                    <td>Google Reviews</td>
+                    <td style="white-space: pre-line">{{fin_brok['Reviews']}}</td>
+                  </tr>
+                  <tr>
+                    <td>Disclosures</td>
+                    <td >No</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+  </div>
+
+  <!--  main container end-->
+
             </div>
           </div>
         </div>
@@ -126,8 +186,8 @@
   <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
   <!-- <script src="static/assets/demo/demo.js"></script> -->
   <script type="text/javascript">
-  $("crd_frame").contents().scrollTop(400);
-  console.log($("crd_frame").contents());
+
+
   </script>
 
 </body>

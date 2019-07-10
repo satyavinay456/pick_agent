@@ -74,7 +74,7 @@
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand" href="#pablo"> Agents in {{city_name}} ({{agents_count}})</a>
+            <a class="navbar-brand" href="#pablo"> Agents in {{city_name}} (<span id="agents_count">{{agents_count}}</span>)</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -93,15 +93,39 @@
         <div class="row">
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <div id="myBtnContainer">
-              <button class="btn active" onClick="window.location.reload();"> Filters</button>
+              <div class="row">
+              &nbsp;&nbsp;&nbsp;&nbsp;
+
+              <button class="btn " onClick="window.location.reload();" > Default</button>
               <button class="btn" id="tot_exp_filter"> Total Experience</button>
               <button class="btn" id="current_city_filter"> Current City Experience</button>
-              <button class="btn" id="sro_filter"> SRO </button>
-              <button class="btn" id="License_filter"> Licenses</button>
-              <input  id="entered_city" type="text" value="" class="form-control" placeholder="search agents">
+              <button class="btn" id="License_filter"> State Licenses</button>
+              <div class="dropdown" style="color:#000000;">
+                  <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown">
+                    Exams Passed
+                  </button>
+                  <div class="dropdown-menu">
+                    <!-- <a class="dropdown-item" href="#">Link 1</a>
+                    <a class="dropdown-item" href="#">Link 2</a>
+                    <a class="dropdown-item" href="#">Link 3</a> -->
+                    <ul class="dropdown-menu" id="exam_checkboxes">
+                      <li ><a href="#" class="dropdown-item" data-value="option1" tabIndex="-1"><input name="exam_checkboxes"value="7" type="checkbox"checked/>&nbsp;Series 7</a></li>
+                      <li><a href="#" class="dropdown-item" data-value="option2" tabIndex="-1"><input name="exam_checkboxes" value="6" type="checkbox"/>&nbsp;Series 6</a></li>
+                      <li ><a href="#" class="dropdown-item" data-value="option1" tabIndex="-1"><input name="exam_checkboxes"value="66" type="checkbox"checked/>&nbsp;Series 66</a></li>
+                      <li><a href="#" class="dropdown-item" data-value="option2" tabIndex="-1"><input name="exam_checkboxes" value="65" type="checkbox"/>&nbsp;Series 65</a></li>
+                      <li><a href="#" class="dropdown-item" data-value="option2" tabIndex="-1"><input name="exam_checkboxes" value="63" type="checkbox"/>&nbsp;Series 63</a></li>
+
+                      <Center><button class="dropdown-item" id="exam_apply">Apply</button></Center>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+              <input  id="search_agents" type="text" value="" class="form-control" placeholder="search agents">
+
             </div>
 
-          <img style="height:60px;display:None;"src="static/loader1.gif" id="loader" alt="">
+          &nbsp;&nbsp;&nbsp;<img style="height:60px;display:None;"src="static/loader1.gif" id="loader" alt="">
         </div>
         <br>
         <div class="row">
@@ -109,21 +133,26 @@
             <div class="row container" id="agents_cards">
           {%for i in agents_data%}
 
-
-
             <div class="card" style="width: 18rem;">
+              {% if i[14]!="-" and i[14!="\n"]%}
+                <img style="height:20px; position:relative;top:10px;left:45%;" class="card-img-top card_size" src="static/bookmark.svg" alt="Card image">
+              {% endif %}
               <div class="card-body  ">
+
                 <div style="height:100px;">
                 <a href="#" onclick="window.open('https://brokercheck.finra.org/individual/summary/{{i[1]}}');return false;"  style="color: #000000;">  <h5  class="card-title">{{i[0]}}</h5> </a>
                   <h6 class="card-subtitle mb-2 text-muted">{{i[2]}}</h6>
+                  <i class="fas fa-award"></i>
                 </div>
 
-                <p class="card-text"> Total Experience : {{i[-1]}}</p>
-                <p class="card-text"> Experience in current city : {{i[-3]}}</p>
-                <p class="card-text"> SRO Registrations : {{i[-2]}}</p>
+
+                <p class="card-text"> Total Experience : {{i[10]}}</p>
+                <p class="card-text"> Experience in current city : {{i[8]}}</p>
+                <p class="card-text"> SRO Registrations : {{i[9]}}</p>
                 <!-- <p class="card-text"> CRD : {{i[1]}}</p> -->
-                <p class="card-text"> advisor : {{i[5]}}</p>
-                <p class="<card-text>  </card-text>"> Licenses : {{i[6]}}</p>
+                <p class="card-text"> Advisor : {{i[5]}}</p>
+                <p class="<card-text>  </card-text>"> State Licenses : {{i[6]}}</p>
+
                 <!-- <p class="card-text"> Points : {{i[7]}}</p> -->
                 <div class="row">
                   <div class="col">
@@ -136,7 +165,7 @@
 
                 <h6 class="card-subtitle mb-2 text-muted"> contact: {{i[4]}}</h6>
 
-                 <a href="{{i[1]}}" class="card-link">More info</a>
+                 <a target="_blank" href="{{i[1]}}" class="card-link" style="color:#000000;">More info</a>
               </div>
             </div>
 
@@ -154,19 +183,19 @@
   <script src="static/assets/js/core/jquery.min.js"></script>
   <script src="static/assets/js/core/popper.min.js"></script>
   <script src="static/assets/js/core/bootstrap.min.js"></script>
-  <script src="static/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <!-- <script src="static/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script> -->
   <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> -->
   <!-- Chart JS -->
-  <script src="static/assets/js/plugins/chartjs.min.js"></script>
+
   <!--  Notifications Plugin    -->
-  <script src="static/assets/js/plugins/bootstrap-notify.js"></script>
+  <!-- <script src="static/assets/js/plugins/bootstrap-notify.js"></script> -->
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="static/assets/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
+  <!-- <script src="static/assets/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script> -->
   <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-  <script src="static/assets/demo/demo.js"></script>
 
     <script src="static/js/filters.js"></script>
+    <script src="static/js/search_agents.js"></script>
 </body>
 
 </html>
