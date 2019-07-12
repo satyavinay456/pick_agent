@@ -72,4 +72,14 @@ $(document).ready(function() {
        }); // end ajax url
  });
 
+ //export button
+ $("#export_btn").click(function() {
+   $("#loader").show();
+   window.location = 'static/client_download/brokers_info.xlsx';
+    $("#loader").hide();
+   // $.fileDownload('http://localhost:5000/static/client_download/brokers_info.xlsx')
+   //  .done(function () { $("#loader").hide(); })
+   //  .fail(function () { $("#loader").hide(); alert('File download failed!'); });
+ }); //end submit_btn
+
 });

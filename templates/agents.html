@@ -113,7 +113,7 @@
                     </ul>
                   </div>
                 </div>
-
+              <button class="btn" id="export_btn"> Export</button>
               </div>
               <div class="row">
                 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -140,7 +140,7 @@
           {%for i in agents_data%}
 
             <div class="card" style="width: 18rem;">
-              {% if i[14]!="-" and i[14!="\n"]%}
+              {% if i[14] not in ["-",""] %}
                 <img style="height:20px; position:relative;top:10px;left:45%;" class="card-img-top card_size" src="static/bookmark.svg" alt="Card image">
               {% endif %}
               <div class="card-body  ">

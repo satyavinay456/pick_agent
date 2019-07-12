@@ -44,12 +44,13 @@ def agents():
     if city_name!="":
         loc_id="static/datasets/"+city_name+"_brokers.xlsx"
         pts_loc_id="static/datasets/"+city_name+"_brokers_pts.xlsx"
-        reviews_loc_id="static/datasets/"+city_name+"_reviews.xlsx"
+
 
         print(loc_id,"\t****")
         brok=pd.read_excel(loc_id)
         brok.drop_duplicates(inplace=True)
         brok_pts=pd.read_excel(pts_loc_id)
+        reviews_loc_id="static/datasets/"+city_name+"_reviews.xlsx"
         brok_reviews=pd.read_excel(reviews_loc_id)
 
         brok_pts.drop_duplicates(inplace=True)
@@ -72,23 +73,25 @@ def agents():
         fin_brok['Licenses']=fin_brok['Licenses'].apply(int)
         fin_brok['SRO']=fin_brok['SRO'].apply(int)
         fin_brok['Reviews'].fillna("-",inplace=True)
-
+        gents_data=fin_brok.values.tolist()
+        pprint(gents_data[21][14])
         def reviews_cln(row):
             rev=str(row['Reviews'])
-            if rev=="\n\n" or rev=="\n\n\n\n":
-                return "-"
+            #print(rev)
+            rev.replace("\n","")
             if rev!="-" :
                 rev.replace("\n",".")
                 return "\n".join(rev.split("$~$"))
             else:
                 return "-"
         fin_brok['Reviews']=fin_brok.apply(reviews_cln,axis=1)
-
+        fin_brok['Reviews']=fin_brok['Reviews'].apply(lambda x: x.replace("\n",""))
         agents_data=fin_brok.values.tolist()
         agents_count=len(agents_data)
-        print(agents_data[22][14])
-        pprint(agents_data[21][14])
+        print(agents_data[26][14])
+        pprint(agents_data[23][14])
         print(list(fin_brok))
+        fin_brok.to_excel("static/client_download/brokers_info.xlsx",index=False)
     else:
         agents_data=[["-","-","-","-"]]
         city_name="XXXXX"
@@ -185,13 +188,36 @@ def tot_exp_filter():
             fin_brok['SRO'].fillna(0,inplace=True)
             fin_brok['Licenses']=fin_brok['Licenses'].apply(int)
             fin_brok['SRO']=fin_brok['SRO'].apply(int)
+            #adding reviews dataset
+            reviews_loc_id="static/datasets/"+city_name+"_reviews.xlsx"
+            brok_reviews=pd.read_excel(reviews_loc_id)
+            fin_brok=fin_brok.merge(brok_reviews,how="left",on=["CRD"])
+            fin_brok.drop_duplicates(inplace=True)
+            def reviews_cln(row):
+                rev=str(row['Reviews'])
+                rev.replace("\n","")
+                if rev!="-" :
+                    rev.replace("\n",".")
+                    return "\n".join(rev.split("$~$"))
+                else:
+                    return "-"
+            fin_brok['Reviews'].fillna("",inplace=True)
+            fin_brok['Reviews']=fin_brok.apply(reviews_cln,axis=1)
+            fin_brok['Reviews']=fin_brok['Reviews'].apply(lambda x: x.replace("\n",""))
+            #ended reviews section
+            fin_brok.to_excel("static/client_download/brokers_info.xlsx",index=False)
             print(fin_brok.head())
             agents_data=fin_brok.values.tolist()
             agents_count=len(agents_data)
             html_data=""
             for i in agents_data:
+                if i[-2] not in ["-",""]:
+                    img_tag='<img style="height:20px; position:relative;top:10px;left:45%;" class="card-img-top card_size" src="static/bookmark.svg" alt="Card image">'
+                else:
+                    img_tag=""
                 temp=f"""
                     <div class="card" style="width: 18rem;">
+                        {img_tag}
                       <div class="card-body  ">
                         <div style="height:100px;">
                           <a href="#" onclick="window.open('https://brokercheck.finra.org/individual/summary/{i[1]}');return false;"  style="color: #000000;">  <h5  class="card-title">{i[0]}</h5> </a>
@@ -243,6 +269,8 @@ def search_agents():
             fin_brok.drop_duplicates(inplace=True)
             print(fin_brok.head())
             fin_brok=fin_brok[fin_brok['Name'].str.match(search_word)]
+            if fin_brok.empty:
+                return jsonify({"html_data":"","agents_count":0})
             print(fin_brok.head())
             fin_brok['Points']=fin_brok['Points']*100
             fin_brok['Points']=fin_brok['Points'].round(4)
@@ -251,13 +279,37 @@ def search_agents():
             fin_brok['SRO'].fillna(0,inplace=True)
             fin_brok['Licenses']=fin_brok['Licenses'].apply(int)
             fin_brok['SRO']=fin_brok['SRO'].apply(int)
-
+            #adding reviews dataset
+            reviews_loc_id="static/datasets/"+city_name+"_reviews.xlsx"
+            brok_reviews=pd.read_excel(reviews_loc_id)
+            fin_brok=fin_brok.merge(brok_reviews,how="left",on=["CRD"])
+            fin_brok.drop_duplicates(inplace=True)
+            def reviews_cln(row):
+                rev=str(row['Reviews'])
+                rev.replace("\n","")
+                if rev!="-" :
+                    rev.replace("\n",".")
+                    return "\n".join(rev.split("$~$"))
+                else:
+                    return "-"
+            fin_brok['Reviews'].fillna("",inplace=True)
+            fin_brok['Reviews']=fin_brok.apply(reviews_cln,axis=1)
+            fin_brok['Reviews']=fin_brok['Reviews'].apply(lambda x: x.replace("\n",""))
+            #ended reviews section
+            fin_brok.to_excel("static/client_download/brokers_info.xlsx",index=False)
+            print("_______________________-")
             agents_data=fin_brok.values.tolist()
+            print(agents_data)
             agents_count=len(agents_data)
             html_data=""
             for i in agents_data:
+                if i[-2] not in ["-",""]:
+                    img_tag='<img style="height:20px; position:relative;top:10px;left:45%;" class="card-img-top card_size" src="static/bookmark.svg" alt="Card image">'
+                else:
+                    img_tag=""
                 temp=f"""
                     <div class="card" style="width: 18rem;">
+                        {img_tag}
                       <div class="card-body  ">
                         <div style="height:100px;">
                           <a href="#" onclick="window.open('https://brokercheck.finra.org/individual/summary/{i[1]}');return false;"  style="color: #000000;">  <h5  class="card-title">{i[0]}</h5> </a>
@@ -301,6 +353,8 @@ def exam_filter():
             if city_name!="":
                 loc_id="static/datasets/"+city_name+"_brokers.xlsx"
                 pts_loc_id="static/datasets/"+city_name+"_brokers_pts.xlsx"
+
+
                 print(loc_id,"\t****")
                 brok=pd.read_excel(loc_id)
                 brok.drop_duplicates(inplace=True)
@@ -308,7 +362,8 @@ def exam_filter():
                 brok_pts.drop_duplicates(inplace=True)
                 #left joining two dataframes
                 fin_brok=brok.merge(brok_pts,how="left",on=["CRD"])
-                fin_brok.drop_duplicates(inplace=True)
+
+
                 fin_brok['Points']=fin_brok['Points']*100
                 fin_brok['Points']=fin_brok['Points'].round(4)
                 fin_brok=fin_brok[fin_brok['Points']!=0]
@@ -316,6 +371,11 @@ def exam_filter():
                 fin_brok['SRO'].fillna(0,inplace=True)
                 fin_brok['Licenses']=fin_brok['Licenses'].apply(int)
                 fin_brok['SRO']=fin_brok['SRO'].apply(int)
+                #adding reviews dataset
+                reviews_loc_id="static/datasets/"+city_name+"_reviews.xlsx"
+                brok_reviews=pd.read_excel(reviews_loc_id)
+                fin_brok=fin_brok.merge(brok_reviews,how="left",on=["CRD"])
+                fin_brok.drop_duplicates(inplace=True)
                 def exam_filter(row):
                     new=str(row['Exams'])
                     series=[i[:i.find("-")].rstrip().split()[1] for i in new.split("\n") if i.startswith('Series')]
@@ -326,13 +386,33 @@ def exam_filter():
                         return "no"
                 fin_brok['exam_conditon']=fin_brok.apply(exam_filter,axis=1)
                 fin_brok=fin_brok[fin_brok['exam_conditon']=="yes"]
+                def reviews_cln(row):
+                    rev=str(row['Reviews'])
+                    rev.replace("\n","")
+                    if rev!="-" :
+                        rev.replace("\n",".")
+                        return "\n".join(rev.split("$~$"))
+                    else:
+                        return "-"
+                fin_brok['Reviews'].fillna("",inplace=True)
+                fin_brok['Reviews']=fin_brok.apply(reviews_cln,axis=1)
+                fin_brok['Reviews']=fin_brok['Reviews'].apply(lambda x: x.replace("\n",""))
+                #ended reviews section
+
+                fin_brok.to_excel("static/client_download/brokers_info.xlsx",index=False)
                 #print(fin_brok[['CRD','exam_conditon']])
                 agents_data=fin_brok.values.tolist()
                 agents_count=len(agents_data)
                 html_data=""
+                print(list(fin_brok))
                 for i in agents_data:
+                    if i[-3] not in ["-",""]:
+                        img_tag='<img style="height:20px; position:relative;top:10px;left:45%;" class="card-img-top card_size" src="static/bookmark.svg" alt="Card image">'
+                    else:
+                        img_tag=""
                     temp=f"""
                         <div class="card" style="width: 18rem;">
+                            {img_tag}
                           <div class="card-body  ">
                             <div style="height:100px;">
                               <a href="#" onclick="window.open('https://brokercheck.finra.org/individual/summary/{i[1]}');return false;"  style="color: #000000;">  <h5  class="card-title">{i[0]}</h5> </a>
