@@ -154,7 +154,6 @@ def agents_details(id):
         fin_brok=fin_brok[fin_brok['CRD']==int(id)].iloc[0]
     except:
         return render_template('user_info.html',id=0,fin_brok=pd.DataFrame())
-
     if fin_brok['Reviews']=="$~$": fin_brok['Reviews']="-"
     if fin_brok['Reviews']!="-":
         fin_brok['Reviews']= "\n\n".join(fin_brok['Reviews'].replace("\n",".").split("$~$"))
