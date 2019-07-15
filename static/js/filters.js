@@ -75,14 +75,15 @@ $(document).ready(function() {
  //export button
  $("#export_btn").click(function() {
    $("#loader").show();
+   url_file=window.location.origin+"/static/client_download/brokers_info.xlsx"
 
-  // window.location = 'static/client_download/brokers_info.xlsx';
   $.ajax({
-      url: 'https://pickrightagent.herokuapp.com/static/client_download/brokers_info.xlsx',
+      url: url_file,
       method: 'GET',
       xhrFields: {
           responseType: 'blob'
       },
+      cache: false,
       success: function (data) {
           var a = document.createElement('a');
           var url = window.URL.createObjectURL(data);
