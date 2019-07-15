@@ -75,6 +75,7 @@ $(document).ready(function() {
  //export button
  $("#export_btn").click(function() {
    $("#loader").show();
+   window.location.href = window.location.href;
    url_file=window.location.origin+"/static/client_download/brokers_info.xlsx"
 
   $.ajax({
