@@ -86,6 +86,7 @@ $(document).ready(function() {
       },
       cache: false,
       success: function (data) {
+          $("#loader").hide();
           var a = document.createElement('a');
           var url = window.URL.createObjectURL(data);
           a.href = url;
@@ -95,10 +96,10 @@ $(document).ready(function() {
           a.remove();
           window.URL.revokeObjectURL(url);
       },
-      error: function (request, status, error) { alert("something went wrong!"); }
+      error: function (request, status, error) {$("#loader").hide(); alert("something went wrong!"); }
   });
   //end
-    $("#loader").hide();
+    
  }); //end submit_btn
 
 });
