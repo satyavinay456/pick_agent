@@ -75,11 +75,28 @@ $(document).ready(function() {
  //export button
  $("#export_btn").click(function() {
    $("#loader").show();
-   window.location = 'static/client_download/brokers_info.xlsx';
+
+  // window.location = 'static/client_download/brokers_info.xlsx';
+  $.ajax({
+      url: 'https://pickrightagent.herokuapp.com/static/client_download/brokers_info.xlsx',
+      method: 'GET',
+      xhrFields: {
+          responseType: 'blob'
+      },
+      success: function (data) {
+          var a = document.createElement('a');
+          var url = window.URL.createObjectURL(data);
+          a.href = url;
+          a.download = 'brokers_info.xlsx';
+          document.body.append(a);
+          a.click();
+          a.remove();
+          window.URL.revokeObjectURL(url);
+      },
+      error: function (request, status, error) { alert("something went wrong!"); }
+  });
+  //end
     $("#loader").hide();
-   // $.fileDownload('http://localhost:5000/static/client_download/brokers_info.xlsx')
-   //  .done(function () { $("#loader").hide(); })
-   //  .fail(function () { $("#loader").hide(); alert('File download failed!'); });
  }); //end submit_btn
 
 });
